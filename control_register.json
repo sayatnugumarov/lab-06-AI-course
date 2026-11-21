@@ -1,0 +1,52 @@
+{
+  "harness_controls": [
+    "validate_input",
+    "blind",
+    "refuse",
+    "log",
+    "escalate"
+  ],
+  "format_problems": [],
+  "entries": [
+    {
+      "control": "blind",
+      "principle": "Fairness and non-discrimination (human rights and democratic values, including fairness and privacy)",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted May 2019, amended May 2024, principle 'Human rights and democratic values, including fairness and privacy' (a Council Recommendation, not legally binding)",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII 'On Artificial Intelligence' of 17 November 2025; Constitution of the Republic of Kazakhstan adopted by referendum on 15 March 2026, in force from 1 July 2026",
+      "provision": "Law No. 230-VIII Article 6 (AI systems must exclude discrimination on grounds of origin, sex, race, nationality, language and others) and Article 4(2); Constitution Article 16(2) (no discrimination on the same grounds). The fund is fictional, so I treat these as binding for this design.",
+      "why_here": "Part 1 found no flip count above its floor (name_language 2 of 40, gender_coded_name 4 of 40, university 1 of 40, against floors of 0 and 1 of 40), but flagship twins scored 2.5 points higher (CI +1.1 to +4.1, sign p = 0.002) and all 4 gender flips went against the male-coded name, so the model no longer sees the name or the university."
+    },
+    {
+      "control": "validate_input",
+      "principle": "Robustness, security and safety",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted May 2019, amended May 2024, principle 'Robustness, security and safety' (a Council Recommendation, not legally binding)",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII 'On Artificial Intelligence' of 17 November 2025",
+      "provision": "Article 11(1) (AI systems must be safe and reliable, excluding unforeseen consequences or abuses) and Article 15(2)(2) (owners and holders must ensure reliability, including protection from failures)",
+      "why_here": "In Part 4 the bare pipeline returned reject for a GPA of 9.9 and an exam score of -5, while the harness refused with invalid_input and made 0 model calls, so no decision rests on values that cannot be true."
+    },
+    {
+      "control": "refuse",
+      "principle": "Respect for human rights and privacy: the system serves only the purpose it was built for and acts only with consent",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted May 2019, amended May 2024, principle 'Human rights and democratic values, including fairness and privacy' (a Council Recommendation, not legally binding)",
+      "instrument": "Law of the Republic of Kazakhstan No. 94-V 'On Personal Data and Its Protection' of 21 May 2013; Law No. 230-VIII 'On Artificial Intelligence' of 17 November 2025",
+      "provision": "Personal Data Law Article 19-1(1) (automated processing that creates or changes a person's rights is prohibited without consent) and Article 7(8) (collection and processing limited to specific, predefined, lawful purposes); Law No. 230-VIII Article 17(3)(4) (prohibits processing personal data in breach of that law) and Article 6",
+      "why_here": "In Part 4 the bare pipeline screened all 6 requests, including the purpose of ranking by ethnicity, a 17-year-old, a missing consent and an instruction in the name field, while the harness refused 5 of 6 with 0 model calls and refused 0 of the 400 clean applicants."
+    },
+    {
+      "control": "log",
+      "principle": "Accountability and transparency",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted May 2019, amended May 2024, principle 'Accountability' (a Council Recommendation, not legally binding)",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII 'On Artificial Intelligence' of 17 November 2025; Law of the Republic of Kazakhstan No. 94-V 'On Personal Data and Its Protection' of 21 May 2013",
+      "provision": "Law No. 230-VIII Article 15(2)(3) (owners and holders keep documentation on the system) and Article 16(1)(5) (a user may ask for the data a decision was based on); Personal Data Law Article 23(2) (masking and hashing are used to protect personal data)",
+      "why_here": "decisions.jsonl holds one record per call, refusals and escalations included, with field names and an input hash but no field values, so a decision such as one of the 46 of 400 that changed after blinding can be reviewed later without keeping a second copy of the applicants' data."
+    },
+    {
+      "control": "escalate",
+      "principle": "Human oversight and accountability",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, adopted May 2019, amended May 2024, principle 'Accountability' (a Council Recommendation, not legally binding)",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII 'On Artificial Intelligence' of 17 November 2025; Law of the Republic of Kazakhstan No. 94-V 'On Personal Data and Its Protection' of 21 May 2013",
+      "provision": "Law No. 230-VIII Article 8(1) (constant control over the system by the owner, holder or user), Article 9 (human autonomy in decisions) and Article 17(2) (a human can correct or cancel decisions); Personal Data Law Article 19-1(2) and (3) (explain the process, allow an objection, answer it within three working days)",
+      "why_here": "34 of 400 applicants (8.5%) were sent to a person against the 16.0% planned, and 12 decisions swapped between shortlist and reject after blinding, so a person reads the cases near the boundary and those flagged by my two rules, although escalation decides only who looks and not whether the outcome is fair."
+    }
+  ]
+}
